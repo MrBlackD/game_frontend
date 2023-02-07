@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import ReactDOM from "react-dom/client";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+import User from "./pages/user/User";
+import Main from "./pages/main/Main";
+import Admin from "./pages/Admin";
+import Answer from "./pages/user/Answer";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App() {
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/main" element={<Main/>}/>
+                <Route path="/user" element={<User/>}/>
+                <Route path="/admin" element={<Admin/>}/>
+                <Route path="/answer" element={<Answer/>}/>
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
-export default App;
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App/>);
