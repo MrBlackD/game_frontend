@@ -22,7 +22,6 @@ const onError = () => {
 stompClient.connect({}, onConnected, onError);
 
 const onMessageReceived = (msg) => {
-    console.log("Received: ", msg.body);
     const message = JSON.parse(msg.body);
 
     if (message.users.find(user => user.name === window.localStorage.getItem('user')) === undefined) {

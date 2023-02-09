@@ -30,10 +30,12 @@ function Question(props) {
                     setShowResults(false);
                     break;
                 case 'SHOW_RESULTS':
-                    type = 'SHOW_RESULTS';
-                    console.log('SHOW_RESULTS');
-                    video.playVideo();
-                    storeChange = false;
+                    if (!storeChange) {
+                        storeChange = true;
+                        type = 'SHOW_RESULTS';
+                        console.log('SHOW_RESULTS');
+                        video.playVideo();
+                    }
                     break;
                 case 'USERS':
                     setUsers(store.getState().value);
@@ -68,7 +70,11 @@ function Question(props) {
                     }
                 }
                 }
-                onPause={() => sound.play()}
+                onPause={() => {
+                    storeChange = false;
+                    console.log('PAUSE')
+                    sound.play()
+                }}
                 onReady={e => video = e.target}
                 videoId={props.question.id}/>
         </Row>
