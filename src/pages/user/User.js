@@ -4,10 +4,9 @@ import {useNavigate} from "react-router-dom";
 import store from "../../store";
 import {sendMessage} from "../../socket";
 import {darkTheme} from "../../constants";
-import {Button, Card, Container, Input, NextUIProvider, Row, Spacer, Text} from "@nextui-org/react";
+import {Button, Card, useInput, Container, Input, NextUIProvider, Row, Spacer, Text} from "@nextui-org/react";
 
 function User() {
-    const [user, setUser] = useState('');
     const [disabled, setDisabled] = useState(window.localStorage.getItem('user'));
     const navigate = useNavigate();
 
@@ -25,21 +24,56 @@ function User() {
         }
     })
 
+    const {value, reset, bindings} = useInput("");
+
+    const validateEmail = (value) => {
+        return value.match(/^[^\s][a-zA-Zа-яА-Я\s]{0,7}$/);
+    };
+
+    const helper = React.useMemo(() => {
+        if (!value)
+            return {
+                text: "",
+                color: "",
+            };
+        const isValid = validateEmail(value);
+        return {
+            text: isValid ? "Красивое имя" : "Некорректное имя",
+            color: isValid ? "success" : "error",
+        };
+    }, [value]);
+
     return <NextUIProvider theme={darkTheme}>
         <Container id="container">
             <Card>
                 <Card.Body>
                     <Row justify="center" align="center">
-                        <Input bordered placeholder="Вводи имя" disabled={disabled !== 'null'} value={user}
-                               onChange={e => setUser(e.target.value)}/>
+                        <Input
+                            {...bindings}
+                            clearable
+                            shadow={false}
+                            onClearClick={reset}
+                            status={helper.color}
+                            color={helper.color}
+                            helperColor={helper.color}
+                            helperText={helper.text}
+                            type="email"
+                            placeholder="Вводи имя"
+                            disabled={disabled !== 'null' && disabled !== null}
+                            size="xl"
+                            bordered
+                        />
                     </Row>
-                    <Spacer y={1}/>
+                    <Spacer y={2}/>
                     <Row justify="center" align="center">
-                        {disabled === 'null' ?
+                        {disabled === 'null' || disabled === null ?
                             <Button color="gradient"
+                                    size="xl"
+                                    disabled = {value.length === 0}
                                     onClick={() => {
-                                        window.localStorage.setItem('user', user);
-                                        sendMessage({action: 'USER', user});
+                                        console.log('value = ', value);
+                                        window.localStorage.setItem('user', value);
+                                        sendMessage({action: 'USER', user: value});
                                         setDisabled('true');
                                     }}> Войти </Button> :
                             <Text

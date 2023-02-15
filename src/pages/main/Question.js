@@ -91,11 +91,11 @@ function Question(props) {
                     </div>
                 )}
         </Row>}
-        {showResults && answers.get(props.question.number).sort((a, b) => a === props.question.answer ? -1 : 1).map(answer =>
+        {showResults && answers.get(props.question.number.toString()).sort((a, b) => a === props.question.answer ? -1 : 1).map(answer =>
             <div>
                 <Spacer/>
                 <Row justify="center" align="center">
-                    <Button color={props.question.answer === answer ? "success" : "warning"}>{answer}</Button>
+                    <Button css = {{fontSize: '30px'}} color={props.question.answer === answer ? "success" : "warning"}>{answer}</Button>
                     {users.sort().filter(user => user.answer === answer).map(user => <User
                         id="user"
                         src={user.avatar}

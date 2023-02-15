@@ -24,10 +24,6 @@ stompClient.connect({}, onConnected, onError);
 const onMessageReceived = (msg) => {
     const message = JSON.parse(msg.body);
 
-    if (message.users.find(user => user.name === window.localStorage.getItem('user')) === undefined) {
-        window.localStorage.setItem('user', null);
-    }
-
     switch (message.action) {
         case 'NEW_GAME':
             console.log('Received from server: NEW GAME');

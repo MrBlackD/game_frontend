@@ -21,6 +21,7 @@ export default function Answer() {
         window.localStorage.setItem('showAnswers', 'false');
     };
 
+
     store.subscribe(() => {
         switch (store.getState().type) {
             case 'NEW_GAME':
@@ -30,42 +31,41 @@ export default function Answer() {
                 navigate("/user");
                 break;
             case 'SHOW_ANSWERS':
+                window.localStorage.setItem('currentQuestion', store.getState().value.questions[store.getState().value.currentQuestion].number);
+                setCurrentQuestion(store.getState().value.questions[store.getState().value.currentQuestion].number.toString());
                 window.localStorage.setItem('showAnswers', 'true');
-                setShowAnswers('true');
+                console.log('users = ', store.getState().value.users)
+                if (store.getState().value.users.filter(u => u.name === window.localStorage.getItem('user')).find(v => v.answer === null)) {
+                    setShowAnswers('true');
+                }
                 break
             case 'SHOW_RESULTS':
+                window.localStorage.setItem('currentQuestion', store.getState().value.questions[store.getState().value.currentQuestion].number);
+                setCurrentQuestion(store.getState().value.questions[store.getState().value.currentQuestion].number.toString());
                 setShowAnswers('false');
                 window.localStorage.setItem('showAnswers', 'false');
                 break;
             case 'CONTINUE':
                 window.localStorage.setItem('currentQuestion', store.getState().value.questions[store.getState().value.currentQuestion].number);
-                setCurrentQuestion(store.getState().value.questions[store.getState().value.currentQuestion].number);
+                setCurrentQuestion(store.getState().value.questions[store.getState().value.currentQuestion].number.toString());
         }
     })
 
-    const getButtons = () => {
-        if (showAnswers === 'true')
-            return <NextUIProvider theme={darkTheme}>
-                <Container id="container">
-                    <Card>
-                        {console.log('currentQuestion = ', currentQuestion[currentQuestion.currentQuestion])}
-                        {console.log('showAnswers = ', showAnswers)}
-                        <Card.Body>
-                            {answers.get((currentQuestion === 'null' || currentQuestion === undefined) ? 1 : currentQuestion).map(answer => <div>
+    return <NextUIProvider theme={darkTheme}>
+        <Container id="container">
+            <Card>
+                <Card.Body>
+                    {showAnswers === 'true' ?
+                        answers.get((currentQuestion === 'null' || currentQuestion === undefined) ? '1' : currentQuestion).map(answer =>
+                            <div>
                                 <Row justify="center" align="center">
-                                    <Button color="gradient"
-                                            onClick={() => onCLick(answer)}>{answer}</Button>
+                                    <Button
+                                        size="xl"
+                                        color="gradient"
+                                        onClick={() => onCLick(answer)}>{answer}</Button>
                                 </Row>
                                 <Spacer/>
-                            </div>)}
-                        </Card.Body>
-                    </Card>
-                </Container>
-            </NextUIProvider>
-        else return <NextUIProvider theme={darkTheme}>
-            <Container id="container">
-                <Card>
-                    <Card.Body>
+                            </div>) :
                         <Row justify="center" align="center">
                             <Text
                                 h2
@@ -75,10 +75,9 @@ export default function Answer() {
                                 }}>
                                 Смотри на телик
                             </Text> </Row>
-                    </Card.Body>
-                </Card>
-            </Container>
-        </NextUIProvider>
-    }
-    return getButtons();
+                    }
+                </Card.Body>
+            </Card>
+        </Container>
+    </NextUIProvider>
 }
