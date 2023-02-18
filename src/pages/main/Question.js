@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import store from "../../store";
 import YouTube from "react-youtube";
 import {sendMessage} from "../../socket";
-import {Button, Row, Spacer, User} from "@nextui-org/react";
+import {Button, Row, Spacer, Text, User} from "@nextui-org/react";
 import {answers} from "../../constants";
 import {sound} from "./Main";
 
@@ -13,6 +13,7 @@ let type;
 
 function Question(props) {
     const [users, setUsers] = useState([]);
+    const [pause, setPause] = useState(false);
     const [showResults, setShowResults] = useState(false);
 
     store.subscribe(() => {
@@ -26,6 +27,7 @@ function Question(props) {
                     }
                     break
                 case 'CONTINUE':
+                    setPause(false);
                     setUsers(store.getState().value.users);
                     setShowResults(false);
                     break;
@@ -42,8 +44,23 @@ function Question(props) {
             }
         }
     );
+    console.log('pause = ', pause)
 
     return <div>
+        {pause === true && <Row justify="center" align="center">
+            <Text
+                h2
+                weight="bold"
+                css={{
+                    textGradient: "45deg, $blue600 -20%, $pink600 50%",
+                }}>Ответили: </Text>
+            <Text
+                h2
+                weight="bold"
+                css={{
+                    textGradient: "45deg, $yellow600 -20%, $red600 100%",
+                }}>&nbsp;{users.filter(user => user.answer).length + ' / ' + window.localStorage.getItem('users')}</Text>
+        </Row>}
         <Row justify="center" align="center">
             <YouTube
                 opts={{
@@ -55,6 +72,7 @@ function Question(props) {
                     },
                 }}
                 onPlay={() => {
+                    setPause(false);
                     sound.pause()
                     if (type === 'PLAY_VIDEO') {
                         setTimeout(() => {
@@ -71,31 +89,34 @@ function Question(props) {
                 }
                 }
                 onPause={() => {
+                    setPause(true);
                     storeChange = false;
                     console.log('PAUSE')
                     sound.play()
                 }}
-                onReady={e => video = e.target}
+                onReady={e => {
+                    console.log('READY')
+                    video = e.target
+                }}
                 videoId={props.question.id}/>
         </Row>
         <Spacer/>
         {!showResults && <Row justify="center" align="center">
             {users.filter(user => user.answer)
-                .map(user => <div>
-                        <User
-                            id="user"
-                            src={user.avatar}
-                            color="gradient"
-                            name={user.name}
-                        />
-                    </div>
+                .map(user => <User
+                        id="user"
+                        src={user.avatar}
+                        color="gradient"
+                        name={user.name}
+                    />
                 )}
         </Row>}
         {showResults && answers.get(props.question.number.toString()).sort((a, b) => a === props.question.answer ? -1 : 1).map(answer =>
             <div>
                 <Spacer/>
                 <Row justify="center" align="center">
-                    <Button css = {{fontSize: '30px'}} color={props.question.answer === answer ? "success" : "warning"}>{answer}</Button>
+                    <Button css={{fontSize: '30px'}}
+                            color={props.question.answer === answer ? "success" : "warning"}>{answer}</Button>
                     {users.sort().filter(user => user.answer === answer).map(user => <User
                         id="user"
                         src={user.avatar}

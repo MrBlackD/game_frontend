@@ -6,6 +6,7 @@
     "@nextui-org/react": "^1.0.0-beta.12",
     "@tiagotrindade/audio-visualizer": "^1.2.1",
     "net": "^1.0.2",
+    "os": "^0.1.2",
     "plyr-react": "^5.1.2",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",

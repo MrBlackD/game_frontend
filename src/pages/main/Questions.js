@@ -4,8 +4,8 @@ import store from "../../store";
 import Question from "./Question";
 import {Row, Spacer, Table, Text, User} from "@nextui-org/react";
 import {sound} from "./Main";
-import round2 from '../../music/Maximum Love - Loaded Gun.mp3';
-import round3 from '../../music/Hugo - 99 Problems.mp3';
+import round2 from '../../music/3.mp3';
+import round3 from '../../music/1.mp3';
 
 function Questions(props) {
     const [index, setIndex] = useState(0);

@@ -60,6 +60,11 @@ export default function Answer() {
                             <div>
                                 <Row justify="center" align="center">
                                     <Button
+                                        css={{
+                                            'white-space': 'break-spaces',
+                                            'display': 'block',
+                                            'line-height': 'inherit'
+                                        }}
                                         size="xl"
                                         color="gradient"
                                         onClick={() => onCLick(answer)}>{answer}</Button>
@@ -73,7 +78,7 @@ export default function Answer() {
                                 css={{
                                     textGradient: "45deg, $blue600 -20%, $pink600 50%",
                                 }}>
-                                Смотри на телик
+                                Получай удовольствие
                             </Text> </Row>
                     }
                 </Card.Body>

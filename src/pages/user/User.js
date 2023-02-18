@@ -24,7 +24,7 @@ function User() {
         }
     })
 
-    const {value, reset, bindings} = useInput("");
+    const {value, bindings} = useInput("");
 
     const validateEmail = (value) => {
         return value.match(/^[^\s][a-zA-Zа-яА-Я\s]{0,7}$/);
@@ -38,7 +38,7 @@ function User() {
             };
         const isValid = validateEmail(value);
         return {
-            text: isValid ? "Красивое имя" : "Некорректное имя",
+            text: isValid ? "Четко" : "Нечетко",
             color: isValid ? "success" : "error",
         };
     }, [value]);
@@ -50,15 +50,13 @@ function User() {
                     <Row justify="center" align="center">
                         <Input
                             {...bindings}
-                            clearable
                             shadow={false}
-                            onClearClick={reset}
                             status={helper.color}
                             color={helper.color}
                             helperColor={helper.color}
                             helperText={helper.text}
                             type="email"
-                            placeholder="Вводи имя"
+                            placeholder={disabled !== 'null' && disabled !== null ? disabled : "Кто по жизни?"}
                             disabled={disabled !== 'null' && disabled !== null}
                             size="xl"
                             bordered
@@ -69,7 +67,7 @@ function User() {
                         {disabled === 'null' || disabled === null ?
                             <Button color="gradient"
                                     size="xl"
-                                    disabled = {value.length === 0}
+                                    disabled={value.length === 0}
                                     onClick={() => {
                                         console.log('value = ', value);
                                         window.localStorage.setItem('user', value);
@@ -82,7 +80,7 @@ function User() {
                                 css={{
                                     textGradient: "45deg, $blue600 -20%, $pink600 50%",
                                 }}>
-                                Ща все будет ...
+                                Отдохни
                             </Text>
                         }
                     </Row>
