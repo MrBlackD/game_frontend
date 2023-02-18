@@ -5,6 +5,8 @@
   "dependencies": {
     "@nextui-org/react": "^1.0.0-beta.12",
     "@tiagotrindade/audio-visualizer": "^1.2.1",
+    "http-proxy-middleware": "^2.0.6",
+    "lodash": "^4.17.21",
     "net": "^1.0.2",
     "plyr-react": "^5.1.2",
     "qrcode.react": "^3.1.0",
@@ -18,6 +20,7 @@
     "react-use-websocket": "^3.0.0",
     "react-youtube": "^10.1.0",
     "redux": "^4.2.0",
+    "rxjs": "^7.8.0",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
     "web-vitals": "^2.1.4"
@@ -45,5 +48,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.2.6"
   }
 }
