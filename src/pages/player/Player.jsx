@@ -32,7 +32,7 @@ export default function Player() {
             <div className="w-full flex flex-col">
               {gameSession.currentScreen.answerVariants.map((item) => (
                 <button
-                  className={`mt-2 w-full h-[60px] text-2xl p-2 rounded-xl ${gameSession.answers.some(i => i.answer === item) ? 'bg-blue-200 text-black':'bg-blue-600'}`}
+                  className={`mt-2 w-full h-[60px] text-2xl p-2 rounded-xl ${gameSession.answers.some(i => i.answer === item && i.userId === user.id) ? 'bg-blue-200 text-black':'bg-blue-600'}`}
                   key={item}
                   onClick={() => apiInstance.sendAnswer({code: id, answer: item, index: gameSession.currentScreenIndex})}
                 >

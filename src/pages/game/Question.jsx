@@ -78,7 +78,7 @@ const Question = ({ gameSession }) => {
               <img className="m-auto" src="../note.png" />
             )}
           {gameSession.currentScreen.type === "answer" && (
-            <div className="absolute z-10 m-auto flex items-center justify-center text-6xl p-4 w-full bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-3xl top-0 h-full">
+            <div className="absolute z-10 m-auto flex items-center justify-center text-6xl p-4 w-full bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-3xl top-0">
               {gameSession.currentScreen.rightAnswer}
             </div>
           )}
@@ -88,6 +88,7 @@ const Question = ({ gameSession }) => {
             } ${blurPlayer ? 'blur-md' : ''}`}
             videoId={gameSession.currentScreen.video}
             opts={opts}
+            onReady={e => e.target.playVideo()}
             // onEnd={() => setBlurPlayer(true)}
           />
         </div>
