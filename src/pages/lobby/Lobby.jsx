@@ -80,7 +80,7 @@ export default function Lobby() {
       <div>
         <div className="flex justify-center flex-col max-w-[600px] m-auto mt-2 border-4 border-indigo-200 border-b-indigo-500 p-4 overflow-hidden">
           <div className="flex mb-2">
-            <QRCodeCanvas value={`${window.location.href}/lobby/${id}`} />
+            <QRCodeCanvas value={`http://192.168.0.110:3000/lobby/${id}`} />
             <div className="flex flex-col text-2xl text-center items-center mb-2 ml-auto p-4">
               Комната <div className="text-5xl ml-auto">{id}</div>
             </div>

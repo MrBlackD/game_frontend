@@ -47,7 +47,7 @@ const Question = ({ gameSession }) => {
     },
   };
   const isEverybodyGiveAnAnswer = Object.keys(gameSession.players).every(
-    (player) => gameSession.answers.find((item) => item.userId)
+    (player) => gameSession.answers.find((item) => item.userId === player)
   );
 
   return (
