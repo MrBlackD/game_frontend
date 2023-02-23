@@ -1,18 +1,28 @@
 import store from "./store";
+import {getPlayer} from "./constants";
 
 const Stomp = require("stompjs");
 let SockJS = require("sockjs-client");
 SockJS = new SockJS('http://' + window.location.hostname + ':8081/ws');
 let stompClient = Stomp.over(SockJS);
 
-export const sendMessage = msg => stompClient.send("/app/start", {}, JSON.stringify(msg));
+export const sendMessage = (url, msg) => {
+    if ((msg.player === undefined || msg.player.name === undefined) && getPlayer() !== null) {
+        msg.player = {name: getPlayer(), answer: msg.answer}
+    }
+    stompClient.send(url, {}, JSON.stringify(msg));
+}
 
 const onConnected = () => {
     stompClient.subscribe(
-        "/game",
-        onMessageReceived
+        "/user/topic/game",
+        playerReceived
     );
-    sendMessage({action: 'START_MENU'});
+    stompClient.subscribe(
+        "/topic/game",
+        gameReceived
+    );
+    sendMessage("/app/start", {action: "START_GAME"});
 };
 
 const onError = () => {
@@ -21,25 +31,16 @@ const onError = () => {
 
 stompClient.connect({}, onConnected, onError);
 
-const onMessageReceived = (msg) => {
+const playerReceived = (msg) => {
     const message = JSON.parse(msg.body);
-
-    switch (message.action) {
-        case 'NEW_GAME':
-            console.log('Received from server: NEW GAME');
-            window.localStorage.setItem('user', null);
-            store.dispatch({type: 'NEW_GAME', value: []});
-            break;
-        case 'QUESTION':
-        case 'CONTINUE':
-        case 'PLAY_VIDEO':
-        case 'SHOW_ANSWERS':
-            store.dispatch({type: message.action, value: message});
-            break;
-        case 'SHOW_RESULTS':
-            store.dispatch({type: 'SHOW_RESULTS'});
-            break;
-        default:
-            store.dispatch({type: 'USERS', value: message.users})
+    if (!message.players.find(player => player.name === getPlayer())) {
+        console.log('message = ', message)
+        document.cookie = 'player=; Max-Age=0'
     }
+    store.dispatch({type: message.action, value: message})
+}
+
+const gameReceived = (msg) => {
+    const message = JSON.parse(msg.body);
+    store.dispatch({type: message.action, value: message})
 }

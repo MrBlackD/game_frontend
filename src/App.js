@@ -1,18 +1,16 @@
 import ReactDOM from "react-dom/client";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import User from "./pages/user/User";
-import Main from "./pages/main/Main";
-import Admin from "./pages/Admin";
-import Answer from "./pages/user/Answer";
+import Player from "./page/player/Player";
+import Main from "./page/main/Main";
+import Admin from "./page/Admin";
 
 export default function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/main" element={<Main/>}/>
-                <Route path="/user" element={<User/>}/>
-                <Route path="/admin" element={<Admin/>}/>
-                <Route path="/answer" element={<Answer/>}/>
+                <Route path="/" element={<Main/>}/>
+                <Route path="/player" element={<Player/>}/>
+                <Route path="/admin_control" element={<Admin/>}/>
             </Routes>
         </BrowserRouter>
     );
